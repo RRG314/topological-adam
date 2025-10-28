@@ -90,6 +90,11 @@ cd topological-adam
 pip install torch torchvision matplotlib
 ```
 
+Or via conda:
+```bash
+conda install conda-forge::topological-adam
+```
+
 ## Configuration
 
 ### Default Usage
