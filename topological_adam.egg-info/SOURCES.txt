@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+setup.py
+topological_adam/__init__.py
+topological_adam/optimizer.py
+topological_adam.egg-info/PKG-INFO
+topological_adam.egg-info/SOURCES.txt
+topological_adam.egg-info/dependency_links.txt
+topological_adam.egg-info/requires.txt
+topological_adam.egg-info/top_level.txt
