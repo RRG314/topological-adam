@@ -94,7 +94,15 @@ pip install torch torchvision matplotlib
 
 ### Default Usage
 ```python
-optimizer = TopologicalAdam(model.parameters(), lr=1e-3)
+optimizer = TopologicalAdam(
+    model.parameters(),
+    lr=1e-3,
+    eta=0.02,       # coupling rate between α–β fields
+    mu0=0.5,       # field permeability (energy coupling strength)
+    w_topo=0.15,   # topological correction weight
+    target_energy=1e-3,  # energy stabilization target (optional)
+)
+
 ```
 
 ### Advanced Configuration
