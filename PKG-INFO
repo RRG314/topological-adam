@@ -101,7 +101,7 @@ for batch in dataloader:
 ## Installation
 
 ```bash
-git clone https://github.com/yourusername/topological-adam.git
+git clone https://github.com/RRG314/topological-adam.git
 cd topological-adam
 pip install torch torchvision matplotlib
 ```
@@ -258,7 +258,7 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) for deta
 ## Support
 
 - **Issues**: [GitHub Issues](https://github.com/RRG314/topological-adam/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/topological-adam/discussions)
+- **Discussions**: [GitHub Discussions](https://github.com/RRG314/topological-adam/discussions)
 
 ---
 
