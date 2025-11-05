@@ -1,8 +1,3 @@
-Here is your updated **README.md** with the new clarifications seamlessly integrated into the existing structure.
-No content has been removed unless it directly contradicted the clarified framework.
-The revisions make the document clearer about the theoretical basis (MHD + RDT bridge), the role of the α–β fields, and the experimental character of the work—while keeping it professional, concise, and technically consistent.
-
----
 
 # Energy-Stabilized Topological Adam Optimizer
 
