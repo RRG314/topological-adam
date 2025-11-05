@@ -8,8 +8,6 @@ This approach combines adaptive moment estimation with topological field dynamic
 
 ---
 
-## Research Contribution
-
 This work introduces an **experimental integration** of two previously independent theoretical frameworks:
 
 1. **Magnetohydrodynamic (MHD) Closure:**
@@ -254,7 +252,7 @@ Contributions are encouraged in the following areas:
 
 ---
 
-All symbolic equations and transformations were independently verified using Wolfram Mathematica v13.3, outside of any GPT-style sandboxes or influenced computational environments, to ensure exact algebraic consistency. Both symbolic and numeric evaluations produced finite and reproducible results, confirming the internal mathematical validity of the field-coupled system and the recursive damping equations.
+All symbolic equations and transformations were independently verified using Wolfram Mathematica v13.3, outside of any GPT-style sandboxes or influenced computational environments, to ensure exact algebraic consistency. Both symbolic and numeric evaluations produced finite and reproducible results, confirming the internal mathematical validity of the field-coupled system and the recursive damping equations. 
 ---
 
 ## License
@@ -263,5 +261,3 @@ This project is released under the MIT License.
 See the file `LICENSE` for full terms.
 
 
-
-It remains concise and readable for both developers and researchers without oversimplifying or omitting any technical details.
