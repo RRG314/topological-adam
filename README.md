@@ -116,7 +116,7 @@ for batch in dataloader:
 ## Installation
 
 ```bash
-git clone https://github.com/yourusername/topological-adam.git
+git clone https://github.com/rrg314/topological-adam.git
 cd topological-adam
 pip install torch torchvision matplotlib
 ```
@@ -216,18 +216,6 @@ Automatic device detection ensures fields are allocated on the same device as mo
 
 ---
 
-## Repository Structure
-
-```
-topological-adam/
-├── topological_adam.py      # Optimizer implementation
-├── benchmark.py             # Benchmark suite
-├── README.md                # Documentation
-├── requirements.txt         # Dependencies
-└── docs/                    # Theory and background materials
-```
-
----
 
 ## Research Context
 
