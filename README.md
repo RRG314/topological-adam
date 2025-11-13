@@ -65,7 +65,7 @@ optimizer = TopologicalAdam(
     eta=0.05,        # coupling rate
     mu0=1.0,         # field permeability constant
     w_topo=0.01,     # strength of topological correction
-    E_target=1.0     # target energy level
+    target_energy=1e-3     # target energy level
 )
 ```
 
@@ -118,7 +118,7 @@ For very small networks (such as single-layer models), Adam may train faster bec
 This can occur if the internal fields remain under the target energy.
 
 **Solution:**
-Increase `E_target` slightly. Typical values are 0.5, 1.0, or 1.5.
+Increase `target_energy` slightly. Typical values are 0.5, 1.0, or 1.5.
 
 ---
 
@@ -129,7 +129,7 @@ This can happen if the energy stabilization suppresses variation too aggressivel
 **Solutions:**
 
 * Increase `eta` slightly
-* Increase `E_target`
+* Increase `target_energy`
 * Reduce `w_topo` if the tanh correction becomes too dominant
 
 ---
@@ -159,7 +159,7 @@ optimizer = TopologicalAdam(
     eta=0.05,
     mu0=1.0,
     w_topo=0.01,
-    E_target=1.0,
+    target_energy=1e-3,
     eps=1e-8
 )
 ```
@@ -172,13 +172,14 @@ optimizer = TopologicalAdam(
 | eta       | 0.05    | 0.01 to 0.10    | Coupling rate; too high can destabilize      |
 | mu0       | 1.0     | 1.0             | Treated as a scaling constant                |
 | w_topo    | 0.01    | 0.001 to 0.05   | Controls strength of correction              |
-| E_target  | 1.0     | 0.5 to 2.0      | Controls internal energy; affects smoothness |
+| target_   | 1e-3    |                 | Controls internal energy; affects smoothness |
+  energy
 | eps       | 1e-8    | 1e-8            | Same as Adam                                 |
 
 ### General recommendations
 
 * Begin with the defaults.
-* Tune `eta`, `w_topo`, and `E_target` only if you see clear instability or overly smooth optimization.
+* Tune `eta`, `w_topo`, and `target_energy` only if you see clear instability or overly smooth optimization.
 * If you are not experimenting with the method, treat the defaults as fixed and modify only the learning rate.
 
 ---
