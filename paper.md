@@ -57,4 +57,3 @@ Repository: <https://github.com/rrg314/topological-adam>. Archived DOI:
 <https://doi.org/10.5281/zenodo.17460708>. PyPI package:
 `topological-adam` (maintained under user `rrg314`).
 
-# References
