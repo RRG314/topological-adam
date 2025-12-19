@@ -79,6 +79,89 @@ optimizer.zero_grad()
 
 ---
 
+## Available Versions
+
+The package provides two versions of the Topological Adam optimizer:
+
+### TopologicalAdam (v1)
+
+The original implementation with energy-stabilized gradient updates.
+
+```python
+from topological_adam import TopologicalAdam
+
+optimizer = TopologicalAdam(
+    model.parameters(),
+    lr=1e-3,
+    betas=(0.9, 0.999),
+    eps=1e-8,
+    eta=0.02,
+    mu0=0.5,
+    w_topo=0.15,
+    field_init_scale=0.01,
+    target_energy=1e-3
+)
+```
+
+### TopologicalAdamV2 (Clean, Stable)
+
+Enhanced version with additional stability features:
+- NaN/Inf protection for gradients
+- Field norm clamping to prevent runaway behavior
+- Separate energy floor and ceiling controls
+- Topological correction clipping
+- Gradient norm floor threshold
+- Extended diagnostic methods
+
+```python
+from topological_adam import TopologicalAdamV2
+
+optimizer = TopologicalAdamV2(
+    model.parameters(),
+    lr=1e-3,
+    betas=(0.9, 0.999),
+    eps=1e-8,
+    eta=0.02,
+    mu0=0.5,
+    w_topo=0.15,
+    field_init_scale=0.01,
+    target_energy=1e-3,
+    # Additional v2 parameters:
+    energy_floor=1e-12,           # minimum energy threshold
+    energy_ceiling_mult=10.0,      # energy ceiling multiplier
+    max_field_norm=10.0,           # maximum field norm
+    topo_clip=1.0,                 # topological correction clip value
+    grad_norm_floor=1e-12          # gradient norm threshold
+)
+```
+
+### When to Use Which Version
+
+**Use TopologicalAdam (v1)** when:
+- You want the original, proven implementation
+- You're working with well-behaved gradients
+- You prefer simplicity and fewer hyperparameters
+
+**Use TopologicalAdamV2** when:
+- Training stability is critical
+- You're dealing with potentially unstable gradients or NaN/Inf issues
+- You need more fine-grained control over field dynamics
+- You want additional diagnostic information
+
+### V2 Additional Diagnostic Methods
+
+TopologicalAdamV2 provides enhanced diagnostics:
+
+```python
+# After optimizer.step()
+energy = optimizer.last_energy()           # Total field energy
+j_mean = optimizer.last_J_mean_abs()       # Mean coupling current magnitude
+alpha_norm = optimizer.last_alpha_norm()   # Alpha field norm sum
+beta_norm = optimizer.last_beta_norm()     # Beta field norm sum
+```
+
+---
+
 # Troubleshooting
 
 This section provides guidance for resolving common issues when using Topological Adam.
