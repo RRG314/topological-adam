@@ -79,6 +79,87 @@ optimizer.zero_grad()
 
 ---
 
+## Available Versions
+
+The package provides two versions of the Topological Adam optimizer:
+
+### TopologicalAdam (v1)
+
+The original implementation with energy-stabilized gradient updates.
+
+```python
+from topological_adam import TopologicalAdam
+
+optimizer = TopologicalAdam(
+    model.parameters(),
+    lr=1e-3,
+    betas=(0.9, 0.999),
+    eps=1e-8,
+    eta=0.02,
+    mu0=0.5,
+    w_topo=0.15,
+    field_init_scale=0.01,
+    target_energy=1e-3
+)
+```
+
+### TopologicalAdamV2
+
+Enhanced version with statistics tracking and refined field coupling:
+- Field norm constraints to prevent runaway behavior
+- Energy-regulated auxiliary field dynamics
+- Comprehensive statistics tracking (optional)
+- Topological ratio monitoring
+- Coupling current analysis
+
+```python
+from topological_adam import TopologicalAdamV2
+
+optimizer = TopologicalAdamV2(
+    model.parameters(),
+    lr=1e-3,
+    betas=(0.9, 0.999),
+    eps=1e-8,
+    eta=0.03,                    # coupling rate
+    mu0=1.0,                     # field permeability constant
+    w_topo=0.1,                  # topological correction weight
+    field_init_scale=1e-2,       # initial field scale
+    target_energy=1e-3,          # target energy level
+    max_field_norm=5.0,          # maximum field norm
+    track_stats=True             # enable statistics tracking
+)
+```
+
+### When to Use Which Version
+
+**Use TopologicalAdam (v1)** when:
+- You want the original, proven implementation
+- You're working with well-behaved gradients
+- You prefer simplicity and minimal overhead
+
+**Use TopologicalAdamV2** when:
+- You want detailed training statistics
+- You need to monitor field dynamics and coupling behavior
+- You want to analyze the topological correction ratio
+- You prefer refined default hyperparameters
+
+### V2 Statistics Tracking
+
+TopologicalAdamV2 provides comprehensive statistics via the `stats` dictionary:
+
+```python
+# After optimizer.step()
+stats = optimizer.stats
+print(f"Energy: {stats['energy']:.6f}")
+print(f"Alpha norm: {stats['alpha_norm']:.6f}")
+print(f"Beta norm: {stats['beta_norm']:.6f}")
+print(f"Coupling: {stats['coupling']:.6f}")
+print(f"Topo ratio: {stats['topo_ratio']:.6f}")
+print(f"Num params: {stats['num_params']}")
+```
+
+---
+
 # Troubleshooting
 
 This section provides guidance for resolving common issues when using Topological Adam.
