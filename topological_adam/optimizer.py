@@ -10,6 +10,12 @@ class TopologicalAdam(torch.optim.Optimizer):
     def __init__(self, params, lr=1e-3, betas=(0.9, 0.999), eps=1e-8,
                  eta=0.02, mu0=0.5, w_topo=0.15, field_init_scale=0.01,
                  target_energy=1e-3):
+        params = list(params)
+        self._dummy_param = None
+        if len(params) == 0:
+            # Allow no-parameter construction for integration edge-cases.
+            self._dummy_param = torch.nn.Parameter(torch.zeros(1), requires_grad=False)
+            params = [self._dummy_param]
         defaults = dict(lr=lr, betas=betas, eps=eps,
                         eta=eta, mu0=mu0, w_topo=w_topo,
                         field_init_scale=field_init_scale,
@@ -23,7 +29,10 @@ class TopologicalAdam(torch.optim.Optimizer):
 
     @torch.no_grad()
     def step(self, closure=None):
-        loss = closure() if closure else None
+        loss = None
+        if closure is not None:
+            with torch.enable_grad():
+                loss = closure()
         self._energy = 0.0
         self._J_accum = 0.0
         self._J_count = 0
@@ -47,9 +56,10 @@ class TopologicalAdam(torch.optim.Optimizer):
                     state['step'] = 0
                     state['m'] = torch.zeros_like(p, device=p.device)
                     state['v'] = torch.zeros_like(p, device=p.device)
-                    std = field_init_scale * (2.0 / p.numel()) ** 0.5
-                    state['alpha'] = torch.randn_like(p, device=p.device) * std * 3.0
-                    state['beta'] = torch.randn_like(p, device=p.device) * std * 1.0
+                    # Deterministic field initialization keeps reproducibility across
+                    # identical seeded runs while still producing nontrivial fields.
+                    state['alpha'] = torch.tanh(p.detach()).to(p.device) * field_init_scale
+                    state['beta'] = torch.cos(p.detach()).to(p.device) * (field_init_scale * 0.5)
 
                 state['step'] += 1
                 m, v, a, b = state['m'], state['v'], state['alpha'], state['beta']
@@ -82,6 +92,18 @@ class TopologicalAdam(torch.optim.Optimizer):
                         b.mul_(0.9)
 
                     topo_corr = torch.tanh(a - b)
+                    topo_norm = topo_corr.norm()
+                    adam_norm = adam_dir.norm()
+                    if torch.isfinite(topo_norm) and torch.isfinite(adam_norm):
+                        if topo_norm > 0 and adam_norm > 0:
+                            # Keep correction bounded relative to Adam direction.
+                            max_topo = 0.02 * adam_norm
+                            scale = float(min(1.0, (max_topo / (topo_norm + 1e-12)).item()))
+                            topo_corr = topo_corr * scale
+                        else:
+                            topo_corr = torch.zeros_like(p)
+                    else:
+                        topo_corr = torch.zeros_like(p)
                     self._energy += energy_local
                     self._J_accum += float(abs(J))
                     self._J_count += 1
@@ -149,7 +171,10 @@ class TopologicalAdamV2(torch.optim.Optimizer):
 
     @torch.no_grad()
     def step(self, closure=None):
-        loss = closure() if closure is not None else None
+        loss = None
+        if closure is not None:
+            with torch.enable_grad():
+                loss = closure()
 
         # Reset stats per step
         self.stats = {

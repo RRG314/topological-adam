@@ -86,7 +86,7 @@ class TestNumericalStability:
         # Create gradients with NaN
         for p in model.parameters():
             p.grad = torch.randn_like(p)
-            p.grad[0, 0] = float('nan')
+            p.grad.view(-1)[0] = float('nan')
 
         # Should not crash (though behavior with NaN is undefined)
         try:
@@ -103,7 +103,7 @@ class TestNumericalStability:
         # Create gradients with Inf
         for p in model.parameters():
             p.grad = torch.randn_like(p)
-            p.grad[0, 0] = float('inf')
+            p.grad.view(-1)[0] = float('inf')
 
         # Should not crash
         try:
