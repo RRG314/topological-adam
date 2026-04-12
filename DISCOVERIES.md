@@ -1,5 +1,15 @@
 # Novel Discoveries: MHD Closure Theory + Topological Adam
-**Author:** Steven Reid | **Date:** April 2026 | **Status:** Experimental Results
+**Author:** Steven Reid | **Date:** April 2026 | **Status:** Original research memo retained for provenance
+
+This file is the original April 2026 discovery memo.
+
+For the current supported repository narrative, use:
+- `README.md` for the recommended user path
+- `docs/results.md` for the current evidence classification
+- `TOPOLOGICAL_ADAM_FINAL_REPORT.md` for the cleanup and refactor summary
+
+Some claims below are intentionally preserved in the form they were first written.
+They should be read alongside the newer status docs rather than as the final repo position.
 
 ---
 

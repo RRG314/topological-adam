@@ -16,10 +16,10 @@ else:
 
 setup(
     name="topological-adam",
-    version="1.0.3",
+    version="1.0.4",
     author="Steven Reid",
     author_email="sreid1118@gmail.com",
-    description="Energy-Stabilized Topological Adam Optimizer for PyTorch",
+    description="Experimental optimizer with auxiliary-field diagnostics for PyTorch",
     long_description=long_desc,
     long_description_content_type="text/markdown",
     url="https://github.com/rrg314/topological-adam",
