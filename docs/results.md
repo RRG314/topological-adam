@@ -46,7 +46,22 @@ So the current repo should **not** claim:
   - stable synthetic diagnostics run
   - `J_t`/loss correlation in tested runs
   - useful stopping heuristic in the tested horizon
+  - SDS candidate branch runs stably on the current small benchmark suite
 - Open:
   - benchmark-level advantage over Adam
   - transfer of the stopping rule to real workloads
   - mechanistic interpretation of `J_t` beyond the current experiments
+  - whether the SDS candidate is anything more than a neutral variant of V2
+
+## SDS Candidate Status
+
+The repository now includes `TopologicalAdamSDS`, an experimental branch that gates the correction with a bounded two-temperature efficiency inspired by the SdS work.
+
+Current benchmark summary:
+- the benchmark harness now compares `Adam`, `TopologicalAdamV2`, and `TopologicalAdamSDS`
+- quadratic: all three solve the task, but plain `Adam` is clearly best on final loss
+- linear regression: V2 is slightly best, with SDS close behind and Adam slightly worse
+- XOR: V2 and SDS both reach perfect mean accuracy on the tested seeds
+- clustered classification: all three optimizers reach perfect mean accuracy on the tested seeds, with only small final-loss differences and no strong separator
+
+That is enough to keep the branch, but not enough to recommend it as the new default.

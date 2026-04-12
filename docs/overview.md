@@ -14,6 +14,12 @@ For new users, ignore the legacy path at first.
 - Diagnostics helper: `topological_adam.analysis`
 - Stopping helper: `topological_adam.stopping.ReconnectionStoppingRule`
 
+## Experimental Path
+
+- Optimizer: `TopologicalAdamSDS`
+- Purpose: test the SDS-inspired two-temperature efficiency gate without changing the default repo path
+- Current status: stable, but not yet clearly better than V2
+
 ## Legacy Path
 
 - Optimizer: `TopologicalAdam`

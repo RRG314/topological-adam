@@ -9,3 +9,4 @@
 - Rewrote the README and docs so `TopologicalAdamV2` is the default supported path and V1 is clearly legacy.
 - Added quickstart and stopping demo examples.
 - Corrected the repo narrative to distinguish implementation facts from empirical findings.
+- Added an SDS-inspired experimental branch, `TopologicalAdamSDS`, plus a benchmark suite against `Adam` and `TopologicalAdamV2`.

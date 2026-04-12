@@ -12,7 +12,7 @@ req_path = root / "requirements.txt"
 if req_path.exists():
     install_requires = [ln.strip() for ln in req_path.read_text(encoding="utf-8").splitlines() if ln.strip() and not ln.strip().startswith("#")]
 else:
-    install_requires = ["torch>=1.9.0"]
+    install_requires = ["numpy>=1.24.0", "torch>=1.9.0"]
 
 setup(
     name="topological-adam",

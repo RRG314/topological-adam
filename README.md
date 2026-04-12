@@ -5,7 +5,7 @@ An experimental optimizer repository centered on two things:
 1. a PyTorch optimizer family built around auxiliary field dynamics
 2. a small, reproducible diagnostics workflow for tracking energy regulation and the internal coupling signal `J_t`
 
-The repository's recommended path is **TopologicalAdamV2**. The original optimizer remains available as **TopologicalAdam** for comparison and provenance.
+The repository's recommended path is **TopologicalAdamV2**. The original optimizer remains available as **TopologicalAdam** for comparison and provenance, and an SDS-inspired candidate branch is available as **TopologicalAdamSDS** for controlled experimental use.
 
 ## What This Repository Is
 
@@ -57,6 +57,15 @@ Use V1 only if you need:
 - continuity with older experiments or package behavior
 
 V1 is kept intentionally. It is not the default path for new work.
+
+### Experimental candidate: `TopologicalAdamSDS`
+
+Use the SDS branch only if you want to test the new two-temperature efficiency gate.
+
+Current honest status:
+- it is stable on the included benchmark suite
+- it does not yet show a clear enough advantage over V2 to become the default
+- it is kept because it is a real, testable branch rather than a speculative note
 
 ## Quickstart
 
@@ -121,15 +130,18 @@ Still open or only partially supported:
 - [docs/mhd-connection.md](docs/mhd-connection.md): how this repo relates to the MHD closure repo
 - `topological_adam/v1.py`: legacy implementation
 - `topological_adam/v2.py`: recommended implementation
+- `topological_adam/sds.py`: experimental SDS-inspired branch
 - `topological_adam/stopping.py`: reconnection-style stopping heuristic
 - `topological_adam/analysis.py`: reusable diagnostics workflow used by `ta_experiments.py`
+- `topological_adam/benchmarks.py`: small candidate benchmark suite
 - `examples/quickstart_v2.py`: shortest supported example
 - `examples/reconnection_stopping_demo.py`: comparison demo with stopping logic
 - `DISCOVERIES.md`: original April 2026 research memo, kept for provenance
+- [docs/sds-candidate.md](docs/sds-candidate.md): current status of the SDS branch
 
 ## Relationship to the MHD Repository
 
-The sibling repository [RRG314/MHD-toolkit](https://github.com/RRG314/MHD-toolkit) is the theory and closure research layer. This repository is the applied optimizer branch.
+The sibling repository [RRG314/MagnetoHydroDynamic-research](https://github.com/RRG314/MagnetoHydroDynamic-research) is the theory and closure research layer. This repository is the applied optimizer branch.
 
 - MHD repo: mathematical and symbolic closure work
 - Topological Adam repo: optimizer implementation and empirical diagnostics
@@ -138,6 +150,7 @@ The sibling repository [RRG314/MHD-toolkit](https://github.com/RRG314/MHD-toolki
 
 - Supported path: `TopologicalAdamV2`
 - Legacy path: `TopologicalAdam`
+- Experimental path: `TopologicalAdamSDS`
 - Diagnostics path: available and reproducible
 - Stopping rule: implemented as a heuristic utility, not a theorem-backed guarantee
 - Benchmark status: exploratory, not production-ready

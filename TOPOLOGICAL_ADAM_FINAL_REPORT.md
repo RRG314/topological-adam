@@ -4,10 +4,13 @@
 
 - `topological_adam/v1.py`: legacy optimizer path
 - `topological_adam/v2.py`: supported optimizer path
+- `topological_adam/sds.py`: experimental SDS-inspired branch
 - `topological_adam/stopping.py`: reconnection-style stopping helper
 - `topological_adam/analysis.py`: reusable diagnostics workflow
+- `topological_adam/benchmarks.py`: benchmark harness for `Adam`, `TopologicalAdamV2`, and `TopologicalAdamSDS`
 - `examples/quickstart_v2.py`: shortest supported example
 - `examples/reconnection_stopping_demo.py`: main stopping demo
+- `examples/benchmark_candidate_suite.py`: benchmark report entry point
 - `docs/`: overview, results, and MHD connection docs
 
 ## What Changed
@@ -22,6 +25,7 @@
 
 - default supported optimizer: `TopologicalAdamV2`
 - legacy comparison optimizer: `TopologicalAdam`
+- experimental optimizer branch: `TopologicalAdamSDS`
 - recommended experiment entry point: `python ta_experiments.py`
 - recommended quickstart: `python examples/quickstart_v2.py`
 
@@ -30,25 +34,34 @@
 - the repository now has a clear supported/default path
 - field-energy tracking is explicit and easy to inspect
 - `J_t` is available as a practical internal diagnostic and stopping signal
+- the SDS-inspired branch is stable enough to preserve as an experimental path, but not strong enough to replace V2
 
 ## Important Corrections
 
 - the repo no longer treats `J_t` as uniquely diagnostic of the topological correction
 - the current comparison shows that a control path can also exhibit strong `J_t`/loss correlation
 - the stopping rule is documented as a heuristic, not a theorem-backed guarantee
+- the SDS-inspired branch does not yet show a strong enough benchmark edge to justify promotion to the default path
 
 ## Validation Status
 
-- `python -m pytest -q` -> `79 passed, 2 skipped`
+- `uv run --with pytest --with pytest-cov python -m pytest -q` -> `83 passed, 2 skipped`
 - `python ta_experiments.py` -> supported comparison runs successfully
 - `python examples/quickstart_v2.py` -> quickstart path runs successfully
 - `python examples/reconnection_stopping_demo.py` -> stopping demo runs successfully
+- `python examples/benchmark_candidate_suite.py` -> benchmark report runs successfully
 
 Current seeded diagnostics summary:
 - control path: `Pearson r(J_t, loss) ≈ 0.784`
 - topological path: `Pearson r(J_t, loss) ≈ 0.785`
 - control stop suggestion: epoch 3
 - topological stop suggestion: epoch 4
+
+Current five-seed candidate benchmark summary:
+- quadratic: `Adam` best, `TopologicalAdamSDS` better than `TopologicalAdamV2`
+- linear regression: `TopologicalAdamV2` slightly best, `TopologicalAdamSDS` close behind
+- XOR: all compared optimizers reach perfect mean accuracy
+- clustered classification: all compared optimizers reach perfect mean accuracy with no meaningful separator
 
 ## Recommended Next Steps
 

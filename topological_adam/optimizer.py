@@ -6,5 +6,6 @@ The supported implementation now lives in ``topological_adam.v1`` and
 
 from .v1 import TopologicalAdam
 from .v2 import TopologicalAdamV2
+from .sds import TopologicalAdamSDS
 
-__all__ = ["TopologicalAdam", "TopologicalAdamV2"]
+__all__ = ["TopologicalAdam", "TopologicalAdamV2", "TopologicalAdamSDS"]

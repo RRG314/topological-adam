@@ -54,3 +54,20 @@ def bounded_topological_correction(
         return torch.zeros_like(topo_corr)
     scale = min(1.0, float(max_ratio) * float(adam_norm.item()) / (float(topo_norm.item()) + 1e-12))
     return topo_corr * scale
+
+
+def two_temperature_efficiency(alpha: torch.Tensor, beta: torch.Tensor) -> dict[str, float]:
+    """Compute a bounded two-temperature efficiency from the auxiliary fields."""
+    alpha_rms = float(alpha.detach().float().pow(2).mean().sqrt().item())
+    beta_rms = float(beta.detach().float().pow(2).mean().sqrt().item())
+    t_hot = max(alpha_rms, beta_rms)
+    t_cold = min(alpha_rms, beta_rms)
+    if t_hot <= 1e-12:
+        eta_c = 0.0
+    else:
+        eta_c = max(0.0, min(1.0, 1.0 - t_cold / (t_hot + 1e-12)))
+    return {
+        "T_hot": t_hot,
+        "T_cold": t_cold,
+        "eta_c": eta_c,
+    }
