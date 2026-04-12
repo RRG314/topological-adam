@@ -1,11 +1,22 @@
 # Topological Adam
 
+[![Release](https://img.shields.io/github/v/release/RRG314/topological-adam?display_name=tag)](https://github.com/RRG314/topological-adam/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/RRG314/topological-adam/blob/main/LICENSE)
+[![Status](https://img.shields.io/badge/Status-Supported%20V2%20%7C%20Experimental%20SDS-0f8f82)](https://github.com/RRG314/topological-adam/blob/main/docs/results.md)
+[![Docs](https://img.shields.io/badge/Docs-Overview%20%7C%20Results-1f6feb)](https://github.com/RRG314/topological-adam/blob/main/docs/overview.md)
+
 An experimental optimizer repository centered on two things:
 
 1. a PyTorch optimizer family built around auxiliary field dynamics
 2. a small, reproducible diagnostics workflow for tracking energy regulation and the internal coupling signal `J_t`
 
 The repository's recommended path is **TopologicalAdamV2**. The original optimizer remains available as **TopologicalAdam** for comparison and provenance, and an SDS-inspired candidate branch is available as **TopologicalAdamSDS** for controlled experimental use.
+
+## Current Release
+
+- Release notes: [docs/releases/v2.1.0.md](docs/releases/v2.1.0.md)
+- Changelog: [CHANGELOG.md](CHANGELOG.md)
+- Recommended starting point: `python examples/quickstart_v2.py`
 
 ## What This Repository Is
 
