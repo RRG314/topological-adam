@@ -18,6 +18,30 @@ The optimizer has demonstrated **stable behavior** on standard machine-learning 
 
 ---
 
+## April 2026 Experimental Update
+
+This repository now includes a dedicated discovery note and two reproducible experiment scripts covering the newest cross-repo findings:
+
+- `DISCOVERIES.md`
+  - summary of the April 2026 MHD closure and Topological Adam findings
+- `mhd_novel_experiments.py`
+  - symbolic Euler-potential closure experiments
+- `ta_experiments.py`
+  - instrumented Topological Adam training experiments tracking `E_t`, `J_t`, and convergence behavior
+
+These files are experimental research assets. They extend the repository's analysis layer, but they do **not** change the core package API.
+
+Reproduce the new experiments from the repository root:
+
+```bash
+python3 mhd_novel_experiments.py
+python3 ta_experiments.py
+```
+
+The discovery note should be read as a research update, not as a replacement for the package documentation below.
+
+---
+
 ## Features
 
 * Energy-stabilized gradient updates
@@ -426,4 +450,3 @@ Reid, Steven. "Topological Adam: Energy-Stabilized Optimizer Inspired by Field-C
 ## License
 
 MIT License.
-
