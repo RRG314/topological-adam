@@ -20,6 +20,10 @@
   results in `benchmark_v4_results.json`): per-optimizer learning-rate
   tuning, fresh-seed evaluation, paired statistics, every task labeled
   [synthetic] or [real data]; wins and losses both reported.
+- Added a reviewer-facing real-data reference training benchmark
+  (`examples/reference_training_benchmark.py`, results in
+  `reference_training_results.json`) using the sklearn digits dataset and a
+  documented tune-then-fresh protocol.
 - Repositioned the documentation plainly: the family is a *specialized*
   optimizer collection, not a general Adam replacement; every benchmark in
   the README is labeled real-data or synthetic.
@@ -32,8 +36,10 @@
   Zomorodian-Carlsson 2005).
 - Packaging cleanup for PyPI: `pyproject.toml` is now the single source of
   truth (metadata, version, URLs, classifiers); `setup.py` reduced to a
-  shim; added `__version__` and persistence exports to the package root.
-- Test suite grown to 124 tests covering the persistence module and the V4
+  shim; added `__version__` and persistence exports to the package root; the
+  source distribution now includes reviewer-facing docs, examples, paper
+  files, tests, and stored JSON outputs.
+- Test suite grown to 125 tests covering the persistence module and the V4
   topology integration.
 
 ## v2.2.0

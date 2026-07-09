@@ -26,6 +26,8 @@ convergence-floor regression, gate behavior, and state-dict compatibility.
 ## Running the benchmarks
 
 ```bash
+python examples/reference_training_benchmark.py --quick --out tmp/reference_training_quick.json
+python examples/reference_training_benchmark.py --out reference_training_results.json
 python examples/benchmark_v3_suite.py --fast
 python examples/benchmark_v3_suite.py
 python examples/confirm_fresh_seeds.py --results benchmark_v3_results.json
@@ -43,6 +45,7 @@ Benchmark claims in this repository follow a fixed protocol:
 3. Confirm stochastic-task conclusions on seeds not used for tuning.
 4. Report paired per-seed statistics, not only means.
 5. Report parity and losses as plainly as wins.
+6. Prefer local or easily available datasets for reviewer-facing examples.
 
 ## Reporting bugs and asking questions
 

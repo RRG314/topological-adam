@@ -19,7 +19,8 @@ legacy-path preservation, and the V3/V4 mechanisms used in the JOSS paper.
   exact H0/H1 persistence, live trajectory persistence, persistence-fed
   gating, and state-dict behavior.
 - `test_benchmarks.py` and `test_analysis.py` cover lightweight benchmark and
-  diagnostics helpers.
+  diagnostics helpers, including a smoke test for the reviewer-facing
+  reference training benchmark.
 
 ## Running tests
 

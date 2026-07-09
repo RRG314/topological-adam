@@ -1,0 +1,11 @@
+include CHANGELOG.md
+include CITATION.cff
+include CONTRIBUTING.md
+include LICENSE
+include README.md
+include paper.bib
+include paper.md
+include *.json
+recursive-include docs *.md *.png
+recursive-include examples *.py
+recursive-include tests *.md *.py

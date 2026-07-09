@@ -127,18 +127,23 @@ each optimizer over the same learning-rate grid before fresh-seed evaluation.
   tasks.
 - V4 wins on the synthetic rotating-field task it targets, is at parity on
   sklearn digits MLP, and loses on noisy teacher-student regression.
+- A small reviewer-facing reference benchmark trains a real-data sklearn digits
+  MLP with Adam, AdamW, V3, and V4 under a documented tune-then-fresh protocol.
 
 Entry points:
 
+- Reference training benchmark: [docs/reference-training-benchmark.md](docs/reference-training-benchmark.md)
 - V3 audit and benchmark details: [docs/v3-audit.md](docs/v3-audit.md)
 - Results summary: [docs/results.md](docs/results.md)
 - V4 trajectory topology: [docs/trajectory-topology.md](docs/trajectory-topology.md)
+- Stored reference training results: [reference_training_results.json](reference_training_results.json)
 - Stored V3 results: [benchmark_v3_results.json](benchmark_v3_results.json)
 - Stored V4 results: [benchmark_v4_results.json](benchmark_v4_results.json)
 
 Reproduce the stored benchmark outputs:
 
 ```bash
+python examples/reference_training_benchmark.py --out reference_training_results.json
 python examples/benchmark_v3_suite.py
 python examples/confirm_fresh_seeds.py --results benchmark_v3_results.json
 python examples/benchmark_v4_suite.py
