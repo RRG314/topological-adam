@@ -57,7 +57,7 @@ lag until a release is uploaded after this branch is merged.
 
 ## Evidence
 
-Full V3 methodology and results are in [AUDIT_REPORT_V3.md](AUDIT_REPORT_V3.md),
+Full V3 methodology and results are in [docs/v3-audit.md](docs/v3-audit.md),
 `benchmark_v3_results.json`, and `fresh_seed_confirmation.json`. V4 results are
 in `benchmark_v4_results.json`.
 
