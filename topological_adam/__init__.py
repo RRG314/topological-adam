@@ -8,7 +8,7 @@ from .stopping import ReconnectionStoppingRule, StopDecision
 from .v3 import TopologicalAdamV3
 from .v4 import TopologicalAdamV4
 
-__version__ = "2.3.0"
+__version__ = "2.2.0"
 
 __all__ = [
     "ExperimentConfig",

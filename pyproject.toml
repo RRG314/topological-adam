@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "topological-adam"
-version = "2.3.0"
+version = "2.2.0"
 description = "Topological Adam optimizer family for PyTorch with coherence-gated field dynamics and trajectory-topology gating"
 authors = [{name = "Steven Reid"}]
 readme = "README.md"
