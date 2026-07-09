@@ -27,6 +27,12 @@ PKG-INFO
 htmlcov/
 .tox/
 
+# Local review/build artifacts
+output/
+tmp/
+*.docx
+*.bundle
+
 # IDEs
 .vscode/
 .idea/

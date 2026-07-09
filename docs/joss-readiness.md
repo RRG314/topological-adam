@@ -35,6 +35,25 @@ python -m pytest tests/ -q
 The GitHub Actions workflow in `.github/workflows/tests.yml` runs the test
 suite on Python 3.10 and 3.12.
 
+## Reviewer workflow
+
+The repository is public, can be cloned without registration, has source files
+browsable online, and has GitHub Issues enabled for review questions, bug
+reports, and requested changes. Reviewers may use the JOSS review issue for the
+main checklist and open repository issues or pull requests for specific
+software changes.
+
+Suggested local review commands:
+
+```bash
+python -m pytest tests/ -q
+python examples/reference_training_benchmark.py --quick --out tmp/reference_training_quick.json
+python examples/trajectory_topology_demo.py
+```
+
+The quick reference benchmark verifies ordinary PyTorch model training on a
+real dataset without requiring a dataset download.
+
 ## PyPI release automation
 
 The packaging workflow in `.github/workflows/publish-pypi.yml` builds and
@@ -54,10 +73,12 @@ workflow is present but PyPI still needs that trusted-publisher setting.
 
 ## Benchmarks
 
+- Reference real-data training benchmark: `examples/reference_training_benchmark.py`
 - V3 benchmark suite: `examples/benchmark_v3_suite.py`
 - V3 fresh-seed confirmation: `examples/confirm_fresh_seeds.py`
 - V4 benchmark suite: `examples/benchmark_v4_suite.py`
-- Stored outputs: `benchmark_v3_results.json`, `fresh_seed_confirmation.json`,
-  and `benchmark_v4_results.json`
+- Stored outputs: `reference_training_results.json`,
+  `benchmark_v3_results.json`, `fresh_seed_confirmation.json`, and
+  `benchmark_v4_results.json`
 
 Benchmark claims in the paper are bounded to these scripts and stored outputs.

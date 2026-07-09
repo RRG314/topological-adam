@@ -162,7 +162,9 @@ windows, low scores on line/noise/straight-descent controls, and a closed V4
 gate when `persistence_every=16` feeds `p_loop` into the update rule. The
 repository includes the benchmark scripts, figures, result JSON files, tests,
 CI, contribution guide, citation metadata, and changelog needed for
-independent review.
+independent review. It also includes `examples/reference_training_benchmark.py`,
+a reviewer-facing real-data digits MLP benchmark with a documented
+tune-then-fresh protocol and stored output in `reference_training_results.json`.
 
 # AI usage disclosure
 

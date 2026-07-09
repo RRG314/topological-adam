@@ -20,17 +20,26 @@
   results in `benchmark_v4_results.json`): per-optimizer learning-rate
   tuning, fresh-seed evaluation, paired statistics, every task labeled
   [synthetic] or [real data]; wins and losses both reported.
+- Added a reviewer-facing real-data reference training benchmark
+  (`examples/reference_training_benchmark.py`, results in
+  `reference_training_results.json`) using the sklearn digits dataset and a
+  documented tune-then-fresh protocol.
 - Repositioned the documentation plainly: the family is a *specialized*
   optimizer collection, not a general Adam replacement; every benchmark in
   the README is labeled real-data or synthetic.
+- Removed stale root-level research memos and legacy experiment entry points
+  so the repository presents as a Python optimizer package rather than a
+  project file dump.
 - Rewrote `docs/trajectory-topology.md` around the explicit criteria for the
   name "Topological Adam" being honest, and updated `paper.md`/`paper.bib`
   (Whitney 1937; Edelsbrunner-Letscher-Zomorodian 2002;
   Zomorodian-Carlsson 2005).
 - Packaging cleanup for PyPI: `pyproject.toml` is now the single source of
   truth (metadata, version, URLs, classifiers); `setup.py` reduced to a
-  shim; added `__version__` and persistence exports to the package root.
-- Test suite grown to 124 tests covering the persistence module and the V4
+  shim; added `__version__` and persistence exports to the package root; the
+  source distribution now includes reviewer-facing docs, examples, paper
+  files, tests, and stored JSON outputs.
+- Test suite grown to 125 tests covering the persistence module and the V4
   topology integration.
 
 ## v2.2.0
@@ -38,9 +47,8 @@
 - JOSS submission preparation: `TopologicalAdamV3` (coherence-gated
   field dynamics, exact Adam/AdamW reduction), reviewer-focused README,
   `paper.md`/`paper.bib`, `CONTRIBUTING.md`, `CITATION.cff`, CI test
-  workflow, archived project preprint with reproducible
-  `examples/preprint_experiments/` implementations, tuned-baseline audit
-  (`AUDIT_REPORT_V3.md`) with fresh-seed confirmation.
+  workflow, tuned-baseline audit (`docs/v3-audit.md`), and fresh-seed
+  confirmation.
 - Added initial `TopologicalAdamV4` prototype with a single-plane
   trajectory winding detector and `examples/trajectory_topology_demo.py`.
 

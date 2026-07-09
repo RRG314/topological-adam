@@ -14,6 +14,9 @@ The strongest current evidence for `TopologicalAdamV3` is:
   seeds in the fresh-seed confirmation run.
 - It is generally at parity with tuned Adam on ordinary noisy classification
   tasks, which is reported as parity rather than hidden.
+- On the reviewer-facing sklearn digits MLP reference benchmark, V3 has the
+  best median held-out cross-entropy while reaching the same median accuracy as
+  Adam and AdamW.
 
 V3 is the default recommendation because its coherence gate is designed to
 close under minibatch noise.
@@ -48,6 +51,7 @@ for small trajectory windows or diagnostics.
 ## Reproduce
 
 ```bash
+python examples/reference_training_benchmark.py --out reference_training_results.json
 python examples/benchmark_v3_suite.py
 python examples/confirm_fresh_seeds.py --results benchmark_v3_results.json
 python examples/benchmark_v4_suite.py
