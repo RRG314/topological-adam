@@ -2,178 +2,144 @@
 
 [![Release](https://img.shields.io/github/v/release/RRG314/topological-adam?display_name=tag)](https://github.com/RRG314/topological-adam/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/RRG314/topological-adam/blob/main/LICENSE)
-[![Status](https://img.shields.io/badge/Status-Supported%20V2%20%7C%20Experimental%20SDS-0f8f82)](https://github.com/RRG314/topological-adam/blob/main/docs/results.md)
-[![Docs](https://img.shields.io/badge/Docs-Overview%20%7C%20Results-1f6feb)](https://github.com/RRG314/topological-adam/blob/main/docs/overview.md)
+[![Tests](https://github.com/RRG314/topological-adam/actions/workflows/tests.yml/badge.svg)](https://github.com/RRG314/topological-adam/actions/workflows/tests.yml)
 
-An experimental optimizer repository centered on two things:
+Topological Adam is a family of Adam-based PyTorch optimizers with two
+documented branches:
 
-1. a PyTorch optimizer family built around auxiliary field dynamics
-2. a small, reproducible diagnostics workflow for tracking energy regulation and the internal coupling signal `J_t`
+| Branch | Optimizers | Status |
+|---|---|---|
+| Field dynamics | `TopologicalAdam`, `TopologicalAdamV2`, `TopologicalAdamV3`, `TopologicalAdamSDS` | V3 is recommended |
+| Trajectory topology | `TopologicalAdamV4` | Experimental |
 
-The repository's recommended path is **TopologicalAdamV2**. The original optimizer remains available as **TopologicalAdam** for comparison and provenance, and an SDS-inspired candidate branch is available as **TopologicalAdamSDS** for controlled experimental use.
+`TopologicalAdamV3` is the default recommendation. It augments Adam with slow
+and fast gradient-EMA fields, uses their disagreement as a short-term trend
+signal, and gates the correction by alignment with the current gradient. The
+gate opens on coherent deterministic or ill-conditioned problems and closes
+under minibatch noise. With `w_topo=0, cautious=False`, V3 reduces exactly to
+Adam or AdamW.
 
-## Current Release
+`TopologicalAdamV4` is experimental. It computes topological invariants of the
+optimizer's own recent update trajectory, not the loss landscape: projected
+winding numbers and optional exact Vietoris-Rips H1 persistent homology. It is
+designed for loop- or oscillation-structured dynamics and is documented in
+[docs/trajectory-topology.md](docs/trajectory-topology.md).
 
-- Release notes: [docs/releases/v2.1.0.md](docs/releases/v2.1.0.md)
-- Changelog: [CHANGELOG.md](CHANGELOG.md)
-- Recommended starting point: `python examples/quickstart_v2.py`
+```python
+from topological_adam import TopologicalAdamV3
 
-## What This Repository Is
+optimizer = TopologicalAdamV3(model.parameters(), lr=1e-3)
+```
 
-Topological Adam extends Adam with two auxiliary tensors, `alpha` and `beta`, plus a bounded correction term added to the update direction. The design is structurally informed by ideas that also appear in the sibling MHD closure repository, but this code is **not** a plasma simulator and it should not be read as a physical model.
+## What this package is
 
-What the repository is for:
-- testing whether the auxiliary-field formulation is numerically useful
-- tracking internal optimizer diagnostics such as field energy and `J_t`
-- comparing a legacy implementation against the newer supported path
+- A PyTorch optimizer package for testing Adam-style mechanisms.
+- A reproducible benchmark harness with tuned baselines and fresh-seed checks.
+- An honest record of wins, parity results, and losses.
 
-What the repository is not for:
-- making physical claims about magnetized fluids
-- claiming theorem-level optimizer guarantees that are not yet proved
-- presenting the current experiments as production benchmark evidence
+## What this package is not
 
-## Best User Path
+- It is not a claim about loss-surface topology.
+- It is not topological data analysis as a general-purpose library.
+- It is not a universal replacement for Adam.
 
-Start here if you want the supported version:
+## Repository map
+
+- `topological_adam/`: installable Python package. V3, V4, and persistence
+  helpers are exported from `topological_adam.__init__`.
+- `examples/`: reproducible benchmark and figure-generation scripts.
+- `tests/`: unit, integration, reduction, and benchmark-smoke tests.
+- `docs/`: reviewer-facing method notes, benchmark summaries, and figures.
+- `paper.md` and `paper.bib`: JOSS paper source and references.
+
+The current GitHub/JOSS branch is versioned as 2.3.0. The PyPI package may
+lag until a release is uploaded after this branch is merged.
+
+## Evidence
+
+Full V3 methodology and results are in [AUDIT_REPORT_V3.md](AUDIT_REPORT_V3.md),
+`benchmark_v3_results.json`, and `fresh_seed_confirmation.json`. V4 results are
+in `benchmark_v4_results.json`.
+
+Summary:
+
+- V3 reaches the measurement floor on the included ill-conditioned quadratic
+  where tuned Adam stalls near 8e-5.
+- V3 improves the included noisy teacher-student regression on 9 of 10 fresh
+  seeds.
+- V3 is generally at parity with tuned Adam on ordinary noisy classification
+  tasks.
+- V4 wins on the synthetic rotating-field task it targets, is parity on digits
+  MLP, and loses on noisy teacher-student regression.
+
+The benchmark suite labels synthetic and real-data tasks separately.
+
+## Installation
+
+For JOSS review or development, install directly from the repository:
 
 ```bash
+git clone https://github.com/RRG314/topological-adam.git
+cd topological-adam
 pip install -e .
-python examples/quickstart_v2.py
 ```
 
-Run the main diagnostics comparison:
+Development dependencies:
 
 ```bash
-python ta_experiments.py
+pip install -r requirements-dev.txt
 ```
 
-This comparison runs:
-- a control path with `eta=0` and `w_topo=0`
-- the recommended V2 path with active topological correction
-
-## Versions
-
-### Recommended: `TopologicalAdamV2`
-
-Use V2 if you want:
-- the supported default path
-- structured field diagnostics
-- deterministic initialization for reproducible demos
-- the reconnection-style stopping helper
-
-### Legacy: `TopologicalAdam`
-
-Use V1 only if you need:
-- the original implementation for comparison
-- continuity with older experiments or package behavior
-
-V1 is kept intentionally. It is not the default path for new work.
-
-### Experimental candidate: `TopologicalAdamSDS`
-
-Use the SDS branch only if you want to test the new two-temperature efficiency gate.
-
-Current honest status:
-- it is stable on the included benchmark suite
-- it does not yet show a clear enough advantage over V2 to become the default
-- it is kept because it is a real, testable branch rather than a speculative note
-
-## Quickstart
+## Usage
 
 ```python
 import torch.nn as nn
-from topological_adam import TopologicalAdamV2
+from topological_adam import TopologicalAdamV3
 
-model = nn.Sequential(
-    nn.Linear(784, 256),
-    nn.ReLU(),
-    nn.Linear(256, 10),
-)
-
-optimizer = TopologicalAdamV2(
-    model.parameters(),
-    lr=1e-3,
-    eta=0.01,
-    w_topo=0.01,
-    target_energy=1.0,
-    deterministic_init=True,
-    track_stats=True,
-)
+model = nn.Sequential(nn.Linear(784, 256), nn.ReLU(), nn.Linear(256, 10))
+optimizer = TopologicalAdamV3(model.parameters(), lr=1e-3)
 ```
 
-After `optimizer.step()`, inspect the internal diagnostics:
+Inspect diagnostics:
 
 ```python
+optimizer = TopologicalAdamV3(model.parameters(), lr=1e-3, track_stats=True)
+# after optimizer.step()
 stats = optimizer.field_metrics()
-print(stats["energy"], stats["j_t"], stats["alpha_beta_corr"])
+print(stats["energy"], stats["j_t"], stats["gate"], stats["align_cos"])
 ```
 
-## What `J_t` Means Here
+Run the experimental trajectory-topology optimizer:
 
-`J_t` is an internal coupling diagnostic computed from the auxiliary fields and the current gradient. In this repository it is treated as a **numerical signal**, not a physical current.
+```python
+from topological_adam import TopologicalAdamV4
 
-Current honest status:
-- `J_t` often decreases as training loss decreases in the supported synthetic diagnostics run
-- `J_t` can be used to build a practical stopping heuristic
-- the current control run also shows strong `J_t`/loss correlation, so this signal is **not yet evidence of a uniquely topological mechanism**
+optimizer = TopologicalAdamV4(model.parameters(), lr=1e-3)
+```
 
-## Exact vs Empirical
+## Reproducing results
 
-Exact or implementation-level facts:
-- Adam moment updates are implemented directly
-- the auxiliary-field update equations are explicit in code
-- target-energy rescaling is enforced directly by the optimizer implementation
+```bash
+python examples/benchmark_v3_suite.py
+python examples/confirm_fresh_seeds.py --results benchmark_v3_results.json
+python examples/benchmark_v4_suite.py
+python examples/make_topology_figures.py
+```
 
-Empirical findings in this repo:
-- V2 can train simple models stably on the included synthetic diagnostics setup
-- the field-energy target is maintained very tightly in the included experiments
-- `J_t` often behaves like a useful convergence indicator on the tested runs
+## Tests
 
-Still open or only partially supported:
-- whether the topological correction improves optimization in a reliable benchmark sense
-- when `J_t` is genuinely informative beyond gradient magnitude effects
-- whether the stopping signal transfers beyond the current synthetic experiments
+```bash
+python -m pytest tests/ -q
+```
 
-## Repository Map
+The tests cover exact Adam/AdamW reduction, convergence-floor regressions,
+state-dict compatibility, V3 field gating, V4 winding and persistence
+computations, trajectory gating behavior, and legacy paths.
 
-- [docs/overview.md](docs/overview.md): where to start and which path is supported
-- [docs/results.md](docs/results.md): current empirical picture, including what did and did not hold up
-- [docs/mhd-connection.md](docs/mhd-connection.md): how this repo relates to the MHD closure repo
-- `topological_adam/v1.py`: legacy implementation
-- `topological_adam/v2.py`: recommended implementation
-- `topological_adam/sds.py`: experimental SDS-inspired branch
-- `topological_adam/stopping.py`: reconnection-style stopping heuristic
-- `topological_adam/analysis.py`: reusable diagnostics workflow used by `ta_experiments.py`
-- `topological_adam/benchmarks.py`: small candidate benchmark suite
-- `examples/quickstart_v2.py`: shortest supported example
-- `examples/reconnection_stopping_demo.py`: comparison demo with stopping logic
-- `DISCOVERIES.md`: original April 2026 research memo, kept for provenance
-- [docs/sds-candidate.md](docs/sds-candidate.md): current status of the SDS branch
+## Citation
 
-## Relationship to the MHD Repository
-
-The sibling repository [RRG314/MagnetoHydroDynamic-research](https://github.com/RRG314/MagnetoHydroDynamic-research) is the theory and closure research layer. This repository is the applied optimizer branch.
-
-- MHD repo: mathematical and symbolic closure work
-- Topological Adam repo: optimizer implementation and empirical diagnostics
-
-## Status
-
-- Supported path: `TopologicalAdamV2`
-- Legacy path: `TopologicalAdam`
-- Experimental path: `TopologicalAdamSDS`
-- Diagnostics path: available and reproducible
-- Stopping rule: implemented as a heuristic utility, not a theorem-backed guarantee
-- Benchmark status: exploratory, not production-ready
-
-## Documentation
-
-- [CHANGELOG.md](CHANGELOG.md)
-- [ROADMAP.md](ROADMAP.md)
-- [docs/overview.md](docs/overview.md)
-- [docs/results.md](docs/results.md)
-- [docs/mhd-connection.md](docs/mhd-connection.md)
-- [TOPOLOGICAL_ADAM_FINAL_REPORT.md](TOPOLOGICAL_ADAM_FINAL_REPORT.md)
+If you use this package, cite [CITATION.cff](CITATION.cff). The JOSS paper
+source is [paper.md](paper.md).
 
 ## License
 

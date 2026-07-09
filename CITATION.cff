@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "Topological Adam: coherence-gated field dynamics and trajectory-topology gating in PyTorch"
+authors:
+  - family-names: Reid
+    given-names: Steven
+    orcid: "https://orcid.org/0009-0003-9132-3410"
+version: "2.3.0"
+repository-code: "https://github.com/RRG314/topological-adam"
+url: "https://github.com/RRG314/topological-adam"
+license: MIT
+keywords:
+  - optimization
+  - PyTorch
+  - Adam
+  - machine learning
+  - adaptive gradient methods
+  - topology
+  - persistent homology
+abstract: >-
+  A PyTorch optimizer family in two branches. The field-dynamics branch
+  (recommended: TopologicalAdamV3) augments Adam with two coupled auxiliary
+  gradient-EMA fields whose disagreement forecasts the short-term gradient
+  trend, scaled by a coupling-current coherence gate that engages the
+  correction on problems with persistent gradient structure and disengages it
+  under minibatch noise. The trajectory-topology branch (experimental:
+  TopologicalAdamV4) computes genuine topological invariants of the
+  optimizer's own recent trajectory - winding numbers of the projected
+  update-direction curve and exact Vietoris-Rips H1 persistent homology -
+  and uses them to gate momentum. Both branches reduce exactly to Adam/AdamW
+  when their extra mechanisms are disabled.

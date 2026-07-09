@@ -1,40 +1,37 @@
 # Overview
 
-## Start Here
+`topological-adam` is a small PyTorch optimizer package for testing
+Adam-compatible update rules with explicit reliability gates. It is organized
+as an optimizer family rather than a single universal replacement for Adam.
 
-For new users, ignore the legacy path at first.
+## Recommended path
 
-1. Install the repo in editable mode.
-2. Run `python examples/quickstart_v2.py`.
-3. Run `python ta_experiments.py` if you want the fuller diagnostics comparison.
+- Use `TopologicalAdamV3` for new experiments.
+- V3 adds slow and fast gradient-EMA fields, uses their disagreement as a
+  short-term trend signal, and gates that correction by alignment with the
+  current gradient.
+- With `w_topo=0` and `cautious=False`, V3 reduces to Adam or AdamW. This is
+  covered by tests.
 
-## Recommended Path
+## Experimental path
 
-- Optimizer: `TopologicalAdamV2`
-- Diagnostics helper: `topological_adam.analysis`
-- Stopping helper: `topological_adam.stopping.ReconnectionStoppingRule`
+- Use `TopologicalAdamV4` only for loop- or oscillation-structured dynamics.
+- V4 records projected update trajectories and gates momentum using online
+  turning/winding statistics. Optional exact Vietoris-Rips H1 persistence can
+  feed the same gate for small trajectory windows.
+- With `loop_gate=False`, V4 reduces to Adam or AdamW. Straight trajectories
+  also keep the gate at one.
 
-## Experimental Path
+## Legacy paths
 
-- Optimizer: `TopologicalAdamSDS`
-- Purpose: test the SDS-inspired two-temperature efficiency gate without changing the default repo path
-- Current status: stable, but not yet clearly better than V2
+- `TopologicalAdam` and `TopologicalAdamV2` are retained for provenance and
+  comparison.
+- `TopologicalAdamSDS` is an experimental two-temperature efficiency gate.
 
-## Legacy Path
+## Where to look
 
-- Optimizer: `TopologicalAdam`
-- Purpose: provenance and comparison only
-
-## What To Expect From The Main Comparison
-
-The supported experiment compares:
-- a control run with the auxiliary correction disabled
-- a V2 run with the auxiliary correction active
-
-This tells you whether the internal signals are:
-- finite
-- stable
-- interpretable
-- plausibly useful as monitoring signals
-
-It does **not** prove that the optimizer is superior in a benchmark sense.
+- `README.md`: installation, quick usage, and summary evidence.
+- `docs/trajectory-topology.md`: V4 design, limitations, and benchmarks.
+- `docs/results.md`: current benchmark interpretation.
+- `paper.md`: JOSS paper source.
+- `tests/`: reduction, behavior, persistence, and integration tests.

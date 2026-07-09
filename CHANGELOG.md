@@ -1,5 +1,49 @@
 # Changelog
 
+## v2.3.0
+
+- Made the package name operational: `TopologicalAdamV4` (experimental) now
+  computes genuine topological invariants of the optimizer's own recent
+  trajectory and uses them to modulate the update.
+  - Multi-plane winding/turning detector: rotation index (winding number) of
+    the projected update-direction curve, measured in `n_planes` random 2-D
+    projections; O(1)-memory `store_projections=False` mode with a verified
+    identical trajectory.
+  - New dependency-free `topological_adam/persistence.py`: exact
+    Vietoris-Rips H0/H1 persistent homology over Z/2 (boundary-matrix
+    reduction), with a scale-free loop score; opt-in gate term via
+    `persistence_every`.
+  - `trajectory_metrics()` and `trajectory_persistence()` diagnostics, off
+    the hot path; exact bit-for-bit Adam reduction with `loop_gate=False`
+    retained and tested.
+- Added an honest V4 benchmark suite (`examples/benchmark_v4_suite.py`,
+  results in `benchmark_v4_results.json`): per-optimizer learning-rate
+  tuning, fresh-seed evaluation, paired statistics, every task labeled
+  [synthetic] or [real data]; wins and losses both reported.
+- Repositioned the documentation plainly: the family is a *specialized*
+  optimizer collection, not a general Adam replacement; every benchmark in
+  the README is labeled real-data or synthetic.
+- Rewrote `docs/trajectory-topology.md` around the explicit criteria for the
+  name "Topological Adam" being honest, and updated `paper.md`/`paper.bib`
+  (Whitney 1937; Edelsbrunner-Letscher-Zomorodian 2002;
+  Zomorodian-Carlsson 2005).
+- Packaging cleanup for PyPI: `pyproject.toml` is now the single source of
+  truth (metadata, version, URLs, classifiers); `setup.py` reduced to a
+  shim; added `__version__` and persistence exports to the package root.
+- Test suite grown to 124 tests covering the persistence module and the V4
+  topology integration.
+
+## v2.2.0
+
+- JOSS submission preparation: `TopologicalAdamV3` (coherence-gated
+  field dynamics, exact Adam/AdamW reduction), reviewer-focused README,
+  `paper.md`/`paper.bib`, `CONTRIBUTING.md`, `CITATION.cff`, CI test
+  workflow, archived project preprint with reproducible
+  `examples/preprint_experiments/` implementations, tuned-baseline audit
+  (`AUDIT_REPORT_V3.md`) with fresh-seed confirmation.
+- Added initial `TopologicalAdamV4` prototype with a single-plane
+  trajectory winding detector and `examples/trajectory_topology_demo.py`.
+
 ## v2.1.0
 
 - Separated the optimizer family into clear `v1`, `v2`, and experimental `sds` paths.
