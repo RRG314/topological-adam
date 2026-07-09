@@ -35,6 +35,23 @@ python -m pytest tests/ -q
 The GitHub Actions workflow in `.github/workflows/tests.yml` runs the test
 suite on Python 3.10 and 3.12.
 
+## PyPI release automation
+
+The packaging workflow in `.github/workflows/publish-pypi.yml` builds and
+checks the wheel/sdist on pull requests and `main` pushes. It publishes to
+PyPI when a GitHub Release is published, or when manually dispatched with the
+`publish` input enabled.
+
+For automatic publishing, PyPI must have a trusted publisher configured for:
+
+- owner: `RRG314`
+- repository: `topological-adam`
+- workflow: `publish-pypi.yml`
+- environment: none
+
+If the publish job fails with an OIDC/trusted-publisher error, the repository
+workflow is present but PyPI still needs that trusted-publisher setting.
+
 ## Benchmarks
 
 - V3 benchmark suite: `examples/benchmark_v3_suite.py`
