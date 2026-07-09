@@ -186,7 +186,7 @@ The JOSS paper source is [paper.md](paper.md), with references in
 [paper.bib](paper.bib). Reviewer navigation notes are in
 [docs/joss-readiness.md](docs/joss-readiness.md).
 
-The branch version is `2.3.0`. The PyPI release should be created only after
+The branch version is `2.2.0`. The PyPI release should be created only after
 the JOSS/readiness branch is merged and the release workflow is confirmed.
 
 ## Citation

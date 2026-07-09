@@ -1,7 +1,13 @@
 # Changelog
 
-## v2.3.0
+## v2.2.0
 
+- JOSS submission preparation: `paper.md`/`paper.bib`, reviewer-focused
+  README, `CONTRIBUTING.md`, `CITATION.cff`, CI test workflow, JOSS paper
+  build workflow, PyPI release workflow, and reviewer readiness notes.
+- Added `TopologicalAdamV3` as the recommended optimizer path: coherence-gated
+  gradient-EMA field dynamics, exact Adam/AdamW reduction, tuned-baseline
+  audit (`docs/v3-audit.md`), and fresh-seed confirmation.
 - Made the package name operational: `TopologicalAdamV4` (experimental) now
   computes genuine topological invariants of the optimizer's own recent
   trajectory and uses them to modulate the update.
@@ -41,16 +47,6 @@
   files, tests, and stored JSON outputs.
 - Test suite grown to 125 tests covering the persistence module and the V4
   topology integration.
-
-## v2.2.0
-
-- JOSS submission preparation: `TopologicalAdamV3` (coherence-gated
-  field dynamics, exact Adam/AdamW reduction), reviewer-focused README,
-  `paper.md`/`paper.bib`, `CONTRIBUTING.md`, `CITATION.cff`, CI test
-  workflow, tuned-baseline audit (`docs/v3-audit.md`), and fresh-seed
-  confirmation.
-- Added initial `TopologicalAdamV4` prototype with a single-plane
-  trajectory winding detector and `examples/trajectory_topology_demo.py`.
 
 ## v2.1.0
 

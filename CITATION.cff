@@ -6,7 +6,7 @@ authors:
   - family-names: Reid
     given-names: Steven
     orcid: "https://orcid.org/0009-0003-9132-3410"
-version: "2.3.0"
+version: "2.2.0"
 repository-code: "https://github.com/RRG314/topological-adam"
 url: "https://github.com/RRG314/topological-adam"
 license: MIT
