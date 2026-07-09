@@ -1,12 +1,47 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
+requires = ["setuptools>=77.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "topological-adam"
-version = "1.0.4"
-description = "Energy-Stabilized Topological Adam Optimizer (MHD-inspired)"
+version = "2.3.0"
+description = "Topological Adam optimizer family for PyTorch with coherence-gated field dynamics and trajectory-topology gating"
 authors = [{name = "Steven Reid"}]
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.8"
 dependencies = ["numpy>=1.24", "torch>=1.10"]
+keywords = [
+    "optimization",
+    "pytorch",
+    "adam",
+    "machine-learning",
+    "topology",
+    "persistent-homology",
+    "winding-number",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Framework :: PyTorch",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Intended Audience :: Science/Research",
+]
+
+[project.urls]
+Homepage = "https://github.com/RRG314/topological-adam"
+Repository = "https://github.com/RRG314/topological-adam"
+Issues = "https://github.com/RRG314/topological-adam/issues"
+Changelog = "https://github.com/RRG314/topological-adam/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "scikit-learn>=1.0",
+    "matplotlib>=3.7",
+]
+
+[tool.setuptools]
+packages = ["topological_adam"]

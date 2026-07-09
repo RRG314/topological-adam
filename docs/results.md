@@ -1,67 +1,55 @@
 # Results
 
-## Strongest Supported Findings
+This repository reports wins, parity results, and losses. The benchmark
+scripts tune each optimizer over the same learning-rate grid before reporting
+comparisons.
 
-### 1. V2 is the clean supported path
+## V3: recommended optimizer
 
-The repository now exposes a clear supported path:
-- `TopologicalAdamV2` for new work
-- `TopologicalAdam` only for legacy comparison
+The strongest current evidence for `TopologicalAdamV3` is:
 
-### 2. Energy targeting is explicit in the implementation
+- It reaches the measurement floor on the included ill-conditioned quadratic
+  where tuned Adam stalls near 8e-5.
+- It improves the included noisy teacher-student regression on 9 of 10 fresh
+  seeds in the fresh-seed confirmation run.
+- It is generally at parity with tuned Adam on ordinary noisy classification
+  tasks, which is reported as parity rather than hidden.
 
-The optimizer rescales the auxiliary fields toward a target-energy level directly in code. In the included synthetic diagnostics run, this produces very tight energy tracking.
+V3 is the default recommendation because its coherence gate is designed to
+close under minibatch noise.
 
-This is an implementation fact plus an empirical observation. It is not yet a proof of any broader optimizer property.
+## V4: trajectory-topology branch
 
-### 3. `J_t` is a practical internal monitoring signal
+`TopologicalAdamV4` is experimental and narrower. It targets trajectories with
+loops or oscillation:
 
-In the included comparison run, `J_t` tends to fall as the loss falls. That makes it useful for monitoring and for a reconnection-style stopping heuristic.
+- On the synthetic rotating-field benchmark, V4 beats tuned Adam on 8 of 8
+  fresh seeds.
+- On sklearn digits MLP, V4 is at parity with tuned Adam.
+- On noisy teacher-student regression, V4 loses to tuned Adam on 7 of 8 fresh
+  seeds.
 
-## What Did Not Hold Up Cleanly
+That result is intentional to report: V4 can react to incidental turning under
+minibatch noise, so it is not recommended as a general stochastic optimizer.
 
-### `J_t` is not yet unique evidence of the topological correction
+## Persistent-homology evidence
 
-The supported comparison includes a control path with `eta=0` and `w_topo=0`. That control still shows strong `J_t`/loss correlation.
+The exact Vietoris-Rips H1 code in `topological_adam.persistence` is validated
+as a detector:
 
-In the current seeded diagnostics run:
-- control: `Pearson r(J_t, loss) ≈ 0.784`
-- topological path: `Pearson r(J_t, loss) ≈ 0.785`
-- recommended stopping epoch:
-  - control path: epoch 3 by the absolute threshold
-  - topological path: epoch 4 by the peak-drop rule
+- sampled circles produce a prominent normalized loop score;
+- line, noise, degenerate, and straight-descent controls stay low;
+- with `persistence_every > 0`, the H1 loop score feeds V4's momentum gate.
 
-So the current repo should **not** claim:
-- that `J_t` proves the topological mechanism is the source of convergence
-- that the observed signal is unique to the topological correction term
-- that the current experiment establishes a theorem-level optimizer result
+The benchmark table uses V4's default online turning/winding detector. Exact
+H1 persistence is opt-in because it synchronizes to the host and is intended
+for small trajectory windows or diagnostics.
 
-## Current Classification
+## Reproduce
 
-- Exact / implementation-level:
-  - update equations as coded
-  - target-energy rescaling step
-  - version separation between V1 and V2
-- Empirical:
-  - stable synthetic diagnostics run
-  - `J_t`/loss correlation in tested runs
-  - useful stopping heuristic in the tested horizon
-  - SDS candidate branch runs stably on the current small benchmark suite
-- Open:
-  - benchmark-level advantage over Adam
-  - transfer of the stopping rule to real workloads
-  - mechanistic interpretation of `J_t` beyond the current experiments
-  - whether the SDS candidate is anything more than a neutral variant of V2
-
-## SDS Candidate Status
-
-The repository now includes `TopologicalAdamSDS`, an experimental branch that gates the correction with a bounded two-temperature efficiency inspired by the SdS work.
-
-Current benchmark summary:
-- the benchmark harness now compares `Adam`, `TopologicalAdamV2`, and `TopologicalAdamSDS`
-- quadratic: all three solve the task, but plain `Adam` is clearly best on final loss
-- linear regression: V2 is slightly best, with SDS close behind and Adam slightly worse
-- XOR: V2 and SDS both reach perfect mean accuracy on the tested seeds
-- clustered classification: all three optimizers reach perfect mean accuracy on the tested seeds, with only small final-loss differences and no strong separator
-
-That is enough to keep the branch, but not enough to recommend it as the new default.
+```bash
+python examples/benchmark_v3_suite.py
+python examples/confirm_fresh_seeds.py --results benchmark_v3_results.json
+python examples/benchmark_v4_suite.py
+python examples/make_topology_figures.py
+```
