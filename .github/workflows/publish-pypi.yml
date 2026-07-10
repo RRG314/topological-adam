@@ -41,7 +41,18 @@ jobs:
       - name: Build package
         run: |
           python -m pip install --upgrade pip
-          python -m pip install build twine
+          python -m pip install build twine trove-classifiers
+          python - <<'PY'
+          import tomllib
+          import trove_classifiers
+
+          with open("pyproject.toml", "rb") as handle:
+              classifiers = tomllib.load(handle)["project"].get("classifiers", [])
+          valid = set(trove_classifiers.classifiers)
+          invalid = sorted(classifier for classifier in classifiers if classifier not in valid)
+          if invalid:
+              raise SystemExit(f"Invalid PyPI classifiers: {invalid}")
+          PY
           python -m build
           python -m twine check dist/*
       - name: Verify V3/V4 are packaged
